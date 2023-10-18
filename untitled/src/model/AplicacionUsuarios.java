@@ -8,9 +8,15 @@ import gui.VentanaMenuUsuario;
 import gui.VentanaVerUsuario;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class AplicacionUsuarios {
 
@@ -27,6 +33,9 @@ public class AplicacionUsuarios {
 		try{
 			if(!ficheroJSON.exists()){
 				ficheroJSON.createNewFile();
+				System.out.println("El archivo se ha creado correctamente.");
+			}else{
+				System.err.println("No se ha podido crear el archivo.");
 			}
 		} catch (IOException e) {
             throw new RuntimeException(e);
@@ -34,18 +43,51 @@ public class AplicacionUsuarios {
     }
 
 	private JSONArray obtenerUsuariosJson() {
-
+		JSONParser parser = new JSONParser();
+		JSONArray user;
+		try {
+			Object obj = parser.parse(new FileReader("./ficheroJSON.json"));
+			JSONObject jsonObject = (JSONObject) obj;
+			user = (JSONArray) jsonObject.get("usuario");
+			System.out.println("Usuarios:");
+			Iterator iterator = user.iterator();
+			while (iterator.hasNext()) {
+				System.out.println(iterator.next());
+			}
+		} catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
 	}
 
 	private int obtenerPosicionUsuario(String nombreUsuario, JSONArray usuarios) {
+		JSONParser parser = new JSONParser();
+		JSONArray user;
+		int pos = 0;
+		try {
+			Object obj = parser.parse(new FileReader("./ficheroJSON.json"));
+			JSONObject jsonObject = (JSONObject) obj;
+			user = (JSONArray) jsonObject.get("usuario");
 
+			Iterator it = user.iterator();
+			while(it.hasNext()){
+				if(it.next().equals(nombreUsuario)){
+					pos = (int) it.next();
+					System.out.println("El número de usuario es " + pos);
+				}
+			}
+
+		} catch (IOException | ParseException e) {
+			throw new RuntimeException(e);
+		}
+		return pos;
 	}
 
 	private JSONObject obtenerUsuarioJson(String nombreUsuario) {
-
+		return null;
 	}
 
-	public void ejecutar() {
+        public void ejecutar() {
 
 	}
 
