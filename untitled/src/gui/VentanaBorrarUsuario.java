@@ -53,7 +53,12 @@ public class VentanaBorrarUsuario extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		if(e.getSource() == btnBorrar){
+			app.borrarUsuario("");
+			app.cerrarSesion();
+		} else if (e.getSource() == btnCancelar){
+			app.mostrarVentanaMenuUsuario("");
+		}
 	}
 
 }

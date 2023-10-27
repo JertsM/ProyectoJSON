@@ -34,7 +34,7 @@ public class AplicacionUsuarios {
 
 	static {
 		try {
-			obj = parser.parse(new FileReader("./ficheroJSON.json"));
+			obj = parser.parse(new FileReader("./untitled/src/ficheroJSON.json"));
 		} catch (IOException | ParseException e) {
 			throw new RuntimeException(e);
 		}
@@ -42,8 +42,10 @@ public class AplicacionUsuarios {
 
 	static JSONObject jsonObject = (JSONObject) obj;
 
-	private void crearFicheroJson() {
-		File ficheroJSON = new File("./ficheroJSON.json");
+	static JSONArray user;
+
+	public void crearFicheroJson() {
+		File ficheroJSON = new File("./untitled/src/ficheroJSON.json");
 		try{
 			if(!ficheroJSON.exists()){
 				ficheroJSON.createNewFile();
@@ -58,7 +60,6 @@ public class AplicacionUsuarios {
 
 	private JSONArray obtenerUsuariosJson() {
 
-		JSONArray user;
 		try {
 			user = (JSONArray) jsonObject.get("usuario");
 			System.out.println("Usuarios:");
@@ -73,10 +74,9 @@ public class AplicacionUsuarios {
 	}
 
 	private int obtenerPosicionUsuario(String nombreUsuario, JSONArray usuarios) {
-		JSONArray user;
 		int pos = 0;
 		try {
-			Object obj = parser.parse(new FileReader("./ficheroJSON.json"));
+			Object obj = parser.parse(new FileReader("./untitled/src/ficheroJSON.json"));
 			JSONObject jsonObject = (JSONObject) obj;
 			user = (JSONArray) jsonObject.get("usuario");
 
@@ -108,35 +108,43 @@ public class AplicacionUsuarios {
 	}
 
 	public void iniciarSesion(String nombreUsuario, String contraseñaUsuario) {
-		obj = obtenerUsuarioJson(nombreUsuario);
+		jsonObject = obtenerUsuarioJson(nombreUsuario);
 		if(jsonObject.get("contraseña") == contraseñaUsuario){
-			
+			mostrarVentanaMenuUsuario(nombreUsuario);
 		}
 
 	}
 
 	public void cerrarSesion() {
-
+		ejecutar();
 	}
 
 	public void crearUsuario(String nombre, String contraseña, String edad, String correo) {
-
+		jsonObject = new JSONObject();
+		jsonObject.put("nombre", nombre);
+		jsonObject.put("contraseña", contraseña);
+		jsonObject.put("edad", edad);
+		jsonObject.put("correo", correo);
+		user.put(jsonObject);
 	}
 
 	public void cambiarContraseña(String nombreUsuario, String nuevaContraseña) {
-
-	}
+		obtenerPosicionUsuario(nombreUsuario, user);
+		jsonObject = obtenerUsuarioJson(nombreUsuario);
+				jsonObject.put("nueva contraseña",  nuevaContraseña);
+			}
 
 	public void borrarUsuario(String nombreUsuario) {
-
+		user.remove(obtenerPosicionUsuario(nombreUsuario, user));
 	}
 
 	public void mostrarVentanaCrearUsuario() {
-
+		VentanaCrearUsuario miVentana = new VentanaCrearUsuario(new AplicacionUsuarios());
+		miVentana.setVisible(true);
 	}
 
 	public void mostrarVentanaVerUsuario(String nombreUsuario) {
-		VentanaVerUsuario miVentana = new VentanaVerUsuario(new AplicacionUsuarios(), nombreUsuario, "21", "mauricio@gmail.com");
+		VentanaVerUsuario miVentana = new VentanaVerUsuario(new AplicacionUsuarios(), nombreUsuario, "", "");
 		miVentana.setVisible(true);
 	}
 
@@ -147,5 +155,10 @@ public class AplicacionUsuarios {
 
 	public void mostrarVentanaBorrarUsuario(String nombreUsuario) {
 		VentanaBorrarUsuario miVentana = new VentanaBorrarUsuario(new AplicacionUsuarios(), nombreUsuario);
+	}
+
+	public void  mostrarVentanaMenuUsuario(String nombreUsuario){
+		VentanaMenuUsuario miVentana = new VentanaMenuUsuario(new AplicacionUsuarios(), nombreUsuario);
+		miVentana.setVisible(true);
 	}
 }

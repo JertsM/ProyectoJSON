@@ -60,7 +60,11 @@ public class VentanaCambiarContraseña extends JFrame implements ActionListener 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		if(e.getSource() == btnCambiarContraseña){
+			app.cambiarContraseña(nombreUsuario, textoNuevoContraseña.getText());
+		} else if (e.getSource() == btnCancelar) {
+			app.mostrarVentanaMenuUsuario(nombreUsuario);
+		}
 	}
 
 }

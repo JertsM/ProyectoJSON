@@ -79,7 +79,7 @@ public class VentanaInicioSesion extends JFrame implements ActionListener {
 		if(e.getSource() == btnIniciarSesion){
 			app.iniciarSesion(textoUsuario.getText(), textoContraseña.getText());
 		}else if(e.getSource() == btnCrearNuevoUsuario){
-			app.crearUsuario();
+			app.mostrarVentanaCrearUsuario();
 		}
 	}
 }
