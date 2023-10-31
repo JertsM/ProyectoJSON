@@ -11,52 +11,45 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 
-import static java.util.logging.Level.parse;
+public class AplicacionUsuarios implements Serializable{
 
-public class AplicacionUsuarios {
-
-	private final String RUTA_FICHERO = "";
-	private VentanaInicioSesion ventanaInicioSesion;
-	private VentanaCrearUsuario ventanaCrearUsuario;
-	private VentanaMenuUsuario ventanaMenuUsuario;
-	private VentanaVerUsuario ventanaVerUsuario;
-	private VentanaCambiarContraseña ventanaCambiarContraseña;
-	private VentanaBorrarUsuario ventanaBorrarUsuario;
+	private static final String RUTA_FICHERO1 = "./src/ficheroJSON.json";
+	private static final String RUTA_FICHERO = "." + File.separator + "src" + File.separator+ "model" + File.separator + "ficheroJSON.json";
 
 	static JSONParser parser = new JSONParser();
 	static Object obj;
 
-	static {
+	/*static {
 		try {
-			obj = parser.parse(new FileReader("./untitled/src/ficheroJSON.json"));
+			obj = parser.parse(new FileReader(RUTA_FICHERO1));
 		} catch (IOException | ParseException e) {
 			throw new RuntimeException(e);
 		}
-    }
+    }*/
 
 	static JSONObject jsonObject = (JSONObject) obj;
 
-	static JSONArray user;
+	static JSONArray user = new JSONArray();
 
 	public void crearFicheroJson() {
-		File ficheroJSON = new File("./untitled/src/ficheroJSON.json");
+		File ficheroJSON = new File(RUTA_FICHERO1);
 		try{
 			if(!ficheroJSON.exists()){
-				ficheroJSON.createNewFile();
 				System.out.println("El archivo se ha creado correctamente.");
+				ficheroJSON.createNewFile();
 			}else{
 				System.err.println("No se ha podido crear el archivo.");
+				FileInputStream fis = new FileInputStream(RUTA_FICHERO1);
+				DataInputStream dis = new DataInputStream(fis);
+				dis.read();
 			}
 		} catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
+	}
 
 	private JSONArray obtenerUsuariosJson() {
 
@@ -76,7 +69,7 @@ public class AplicacionUsuarios {
 	private int obtenerPosicionUsuario(String nombreUsuario, JSONArray usuarios) {
 		int pos = 0;
 		try {
-			Object obj = parser.parse(new FileReader("./untitled/src/ficheroJSON.json"));
+			Object obj = parser.parse(new FileReader(RUTA_FICHERO));
 			JSONObject jsonObject = (JSONObject) obj;
 			user = (JSONArray) jsonObject.get("usuario");
 
@@ -126,6 +119,7 @@ public class AplicacionUsuarios {
 		jsonObject.put("edad", edad);
 		jsonObject.put("correo", correo);
 		user.put(jsonObject);
+
 	}
 
 	public void cambiarContraseña(String nombreUsuario, String nuevaContraseña) {
