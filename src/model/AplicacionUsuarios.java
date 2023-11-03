@@ -3,14 +3,12 @@ package model;
 import gui.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.JSONTokener;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Iterator;
 
 public class AplicacionUsuarios implements Serializable{
@@ -21,7 +19,7 @@ public class AplicacionUsuarios implements Serializable{
 
 	static JSONObject jsonObject = (JSONObject) obj;
 
-	static JSONArray user = new JSONArray();
+	static JSONArray user;
 	VentanaCrearUsuario crearUsuario;
 
 	VentanaMenuUsuario ventanaMenuUsuario;
@@ -44,6 +42,15 @@ public class AplicacionUsuarios implements Serializable{
         }
     }
 
+	public void escribirFichero() throws IOException {
+		FileWriter out = new FileWriter(RUTA_FICHERO1);
+		out.write(user.toString());
+		out.flush();
+	}
+
+	public void obtenerUsuariosJson(){
+		
+	}
 	private int obtenerPosicionUsuario(String nombreUsuario, JSONArray usuarios) {
 		int pos = 0;
 		Iterator it = user.iterator();
@@ -72,7 +79,7 @@ public class AplicacionUsuarios implements Serializable{
 
 	public void iniciarSesion(String nombreUsuario, String contraseñaUsuario) {
 		jsonObject = obtenerUsuarioJson(nombreUsuario);
-		if(jsonObject.get("contraseña") == contraseñaUsuario){
+		if(jsonObject.get("contraseña").equals(contraseñaUsuario)){
 			mostrarVentanaMenuUsuario(nombreUsuario);
 		}else{
 			JOptionPane.showMessageDialog(ventanaMenuUsuario, "No se ha encontrado");
@@ -85,20 +92,22 @@ public class AplicacionUsuarios implements Serializable{
 	}
 
 	public void crearUsuario(String nombre, String contraseña, String edad, String correo) {
-		user = new JSONArray();
+
 		jsonObject = new JSONObject();
 		jsonObject.put("nombre", nombre);
 		jsonObject.put("contraseña", contraseña);
 		jsonObject.put("edad", edad);
 		jsonObject.put("correo", correo);
 		user.add(jsonObject);
+		escribirFichero();
 
 	}
 
 	public void cambiarContraseña(String nombreUsuario, String nuevaContraseña) {
 		obtenerPosicionUsuario(nombreUsuario, user);
 		jsonObject = obtenerUsuarioJson(nombreUsuario);
-				jsonObject.put("nueva contraseña",  nuevaContraseña);
+		jsonObject.put("nueva contraseña",  nuevaContraseña);
+		escribirFichero();
 			}
 
 	public void borrarUsuario(String nombreUsuario) {

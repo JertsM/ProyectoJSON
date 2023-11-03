@@ -3,6 +3,7 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -101,7 +102,11 @@ public class VentanaCrearUsuario extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnCrear){
-			app.crearUsuario(textoNombre.getText(), textoContraseña.getText(), textoEdad.getText(), textoCorreo.getText());
+			try {
+				app.crearUsuario(textoNombre.getText(), textoContraseña.getText(), textoEdad.getText(), textoCorreo.getText());
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
 		} else if (e.getSource() == btnCancelar){
 			app.ejecutar();
 		}
