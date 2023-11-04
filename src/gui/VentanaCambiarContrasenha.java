@@ -3,6 +3,7 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import model.AplicacionUsuarios;
 
-public class VentanaCambiarContraseña extends JFrame implements ActionListener {
+public class VentanaCambiarContrasenha extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JLabel etiquetaNuevaContraseña;
@@ -23,7 +24,7 @@ public class VentanaCambiarContraseña extends JFrame implements ActionListener 
 	private AplicacionUsuarios app;
 	private String nombreUsuario;
 
-	public VentanaCambiarContraseña(AplicacionUsuarios app, String nombreUsuario) {
+	public VentanaCambiarContrasenha(AplicacionUsuarios app, String nombreUsuario) {
 		this.app = app;
 		this.nombreUsuario = nombreUsuario;
 		setTitle("Aplicación usuarios");
@@ -61,7 +62,7 @@ public class VentanaCambiarContraseña extends JFrame implements ActionListener 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnCambiarContraseña){
-			app.cambiarContraseña(nombreUsuario, textoNuevoContraseña.getText());
+				app.cambiarContraseña(nombreUsuario, textoNuevoContraseña.getText());
 		} else if (e.getSource() == btnCancelar) {
 			app.mostrarVentanaMenuUsuario(nombreUsuario);
 		}

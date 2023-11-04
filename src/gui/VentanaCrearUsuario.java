@@ -102,11 +102,7 @@ public class VentanaCrearUsuario extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnCrear){
-			try {
 				app.crearUsuario(textoNombre.getText(), textoContraseña.getText(), textoEdad.getText(), textoCorreo.getText());
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
 		} else if (e.getSource() == btnCancelar){
 			app.ejecutar();
 		}

@@ -24,9 +24,8 @@ public class AplicacionUsuarios implements Serializable{
 
 	VentanaMenuUsuario ventanaMenuUsuario;
 	VentanaVerUsuario verUsuario;
-	VentanaCambiarContraseña cambiarContra;
+	VentanaCambiarContrasenha cambiarContra;
 	VentanaBorrarUsuario borrarUsuario;
-	VentanaMenuUsuario ventanaMenuUsuario1;
 
 	public void crearFicheroJson() {
 		File ficheroJSON = new File(RUTA_FICHERO1);
@@ -38,19 +37,43 @@ public class AplicacionUsuarios implements Serializable{
 				user = (JSONArray) parser.parse(new FileReader(ficheroJSON));
 			}
 		} catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
-	public void escribirFichero() throws IOException {
-		FileWriter out = new FileWriter(RUTA_FICHERO1);
-		out.write(user.toString());
-		out.flush();
+	public void escribirFichero(JSONObject jsonObject, String nombreArchivo) {
+		try{
+			FileWriter fw = new FileWriter(RUTA_FICHERO1, true);
+			jsonObject.writeJSONString(fw);
+			fw.append(", " + '\n');
+			fw.close();
+		} catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	public void obtenerUsuariosJson(){
-		
-	}
+		try{
+			FileReader fr = new FileReader(RUTA_FICHERO1);
+			JSONTokener jsonTokener = new JSONTokener(fr);
+			jsonObject = (JSONObject) parser.parse(String.valueOf(jsonTokener));
+			user = (JSONArray) jsonObject.get("nombre");
+
+			for(Object usuario : user){
+				JSONObject usuarioObj = (JSONObject) usuario;
+
+				String nombre = (String) usuarioObj.get("nombre");
+				String edad = (String) usuarioObj.get("edad");
+
+				System.out.println("Nombre: " + nombre);
+				System.out.println("Edad: " + edad);
+				System.out.println();
+			}
+			fr.close();
+		} catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 	private int obtenerPosicionUsuario(String nombreUsuario, JSONArray usuarios) {
 		int pos = 0;
 		Iterator it = user.iterator();
@@ -82,7 +105,7 @@ public class AplicacionUsuarios implements Serializable{
 		if(jsonObject.get("contraseña").equals(contraseñaUsuario)){
 			mostrarVentanaMenuUsuario(nombreUsuario);
 		}else{
-			JOptionPane.showMessageDialog(ventanaMenuUsuario, "No se ha encontrado");
+			JOptionPane.showMessageDialog(ventanaMenuUsuario, "Usuario o contraseña incorrectos.");
 		}
 
 	}
@@ -91,23 +114,26 @@ public class AplicacionUsuarios implements Serializable{
 		ejecutar();
 	}
 
-	public void crearUsuario(String nombre, String contraseña, String edad, String correo) {
-
+	public void crearUsuario(String nombre, String contrasenha, String edad, String correo) {
 		jsonObject = new JSONObject();
 		jsonObject.put("nombre", nombre);
-		jsonObject.put("contraseña", contraseña);
+		jsonObject.put("contraseña", contrasenha);
 		jsonObject.put("edad", edad);
 		jsonObject.put("correo", correo);
 		user.add(jsonObject);
-		escribirFichero();
-
+		escribirFichero(jsonObject, RUTA_FICHERO1);
+		JOptionPane.showMessageDialog(crearUsuario, "El usuario ha sido creado con éxito.");
 	}
 
-	public void cambiarContraseña(String nombreUsuario, String nuevaContraseña) {
-		obtenerPosicionUsuario(nombreUsuario, user);
-		jsonObject = obtenerUsuarioJson(nombreUsuario);
-		jsonObject.put("nueva contraseña",  nuevaContraseña);
-		escribirFichero();
+	public void cambiarContraseña(String nombreUsuario, String nuevaContrasenha) {
+		int posicion = obtenerPosicionUsuario(nombreUsuario, user);
+		if(posicion != -1){
+			JSONObject usuario = (JSONObject) user.get(posicion);
+			usuario.put("contraseña", nuevaContrasenha);
+			System.out.println("La contraseña se ha actualizado correctamente.");
+		}else {
+			System.out.println("El usuario introducido no existe.");
+		}
 			}
 
 	public void borrarUsuario(String nombreUsuario) {
@@ -124,8 +150,8 @@ public class AplicacionUsuarios implements Serializable{
 		verUsuario.setVisible(true);
 	}
 
-	public void mostrarVentanaCambiarContraseña(String nombreUsuario) {
-		cambiarContra = new VentanaCambiarContraseña(this, nombreUsuario);
+	public void mostrarVentanaCambiarContrasenha(String nombreUsuario) {
+		cambiarContra = new VentanaCambiarContrasenha(this, nombreUsuario);
 		cambiarContra.setVisible(true);
 	}
 
@@ -134,7 +160,7 @@ public class AplicacionUsuarios implements Serializable{
 	}
 
 	public void  mostrarVentanaMenuUsuario(String nombreUsuario){
-		ventanaMenuUsuario1 = new VentanaMenuUsuario(this, nombreUsuario);
-		ventanaMenuUsuario1.setVisible(true);
+		ventanaMenuUsuario = new VentanaMenuUsuario(this, nombreUsuario);
+		ventanaMenuUsuario.setVisible(true);
 	}
 }

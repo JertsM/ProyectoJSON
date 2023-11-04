@@ -3,8 +3,12 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/Downloads/json-20230618.jar!/" />
       <root url="jar://$USER_HOME$/Downloads/json-simple-1.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Librerias JAVA/java-json.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Librerias JAVA/json-simple-1.1.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Downloads/Librerias JAVA/java-json.jar!/" />
+    </SOURCES>
   </library>
 </component>
