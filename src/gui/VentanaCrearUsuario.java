@@ -3,7 +3,6 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,11 +18,11 @@ public class VentanaCrearUsuario extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JLabel etiquetaCrearUsuario;
 	private JLabel etiquetaNombre;
-	private JLabel etiquetaContraseña;
+	private JLabel etiquetaContrasenha;
 	private JLabel etiquetaEdad;
 	private JLabel etiquetaCorreo;
 	private JTextField textoNombre;
-	private JTextField textoContraseña;
+	private JTextField textoContrasenha;
 	private JTextField textoEdad;
 	private JTextField textoCorreo;
 	private JButton btnCrear;
@@ -58,15 +57,15 @@ public class VentanaCrearUsuario extends JFrame implements ActionListener {
 		contentPane.add(textoNombre);
 		textoNombre.setColumns(10);
 
-		etiquetaContraseña = new JLabel("Contraseña:");
-		etiquetaContraseña.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		etiquetaContraseña.setBounds(65, 112, 68, 14);
-		contentPane.add(etiquetaContraseña);
+		etiquetaContrasenha = new JLabel("Contraseña:");
+		etiquetaContrasenha.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		etiquetaContrasenha.setBounds(65, 112, 68, 14);
+		contentPane.add(etiquetaContrasenha);
 
-		textoContraseña = new JTextField();
-		textoContraseña.setColumns(10);
-		textoContraseña.setBounds(65, 137, 214, 20);
-		contentPane.add(textoContraseña);
+		textoContrasenha = new JTextField();
+		textoContrasenha.setColumns(10);
+		textoContrasenha.setBounds(65, 137, 214, 20);
+		contentPane.add(textoContrasenha);
 
 		etiquetaEdad = new JLabel("Edad:");
 		etiquetaEdad.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -102,7 +101,7 @@ public class VentanaCrearUsuario extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnCrear){
-				app.crearUsuario(textoNombre.getText(), textoContraseña.getText(), textoEdad.getText(), textoCorreo.getText());
+				app.crearUsuario(textoNombre.getText(), textoContrasenha.getText(), textoEdad.getText(), textoCorreo.getText());
 		} else if (e.getSource() == btnCancelar){
 			app.ejecutar();
 		}

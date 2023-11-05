@@ -3,7 +3,6 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -62,7 +61,7 @@ public class VentanaCambiarContrasenha extends JFrame implements ActionListener 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnCambiarContraseña){
-				app.cambiarContraseña(nombreUsuario, textoNuevoContraseña.getText());
+				app.cambiarContrasenha(nombreUsuario, textoNuevoContraseña.getText());
 		} else if (e.getSource() == btnCancelar) {
 			app.mostrarVentanaMenuUsuario(nombreUsuario);
 		}

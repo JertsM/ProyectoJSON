@@ -37,8 +37,8 @@ public class AplicacionUsuarios implements Serializable{
 				user = (JSONArray) parser.parse(new FileReader(ficheroJSON));
 			}
 		} catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+			e.printStackTrace();
+		}
     }
 
 	public void escribirFichero(JSONObject jsonObject, String nombreArchivo) {
@@ -102,12 +102,17 @@ public class AplicacionUsuarios implements Serializable{
 
 	public void iniciarSesion(String nombreUsuario, String contraseñaUsuario) {
 		jsonObject = obtenerUsuarioJson(nombreUsuario);
-		if(jsonObject.get("contraseña").equals(contraseñaUsuario)){
-			mostrarVentanaMenuUsuario(nombreUsuario);
-		}else{
-			JOptionPane.showMessageDialog(ventanaMenuUsuario, "Usuario o contraseña incorrectos.");
-		}
 
+		if(jsonObject != null){
+			String almacenarPass = (String) jsonObject.get("contraseña");
+			if(almacenarPass != null && almacenarPass.equals(contraseñaUsuario)){
+				mostrarVentanaMenuUsuario(nombreUsuario);
+			} else {
+				JOptionPane.showMessageDialog(ventanaMenuUsuario, "Usuario o contraseña incorrectos.");
+			}
+		} else {
+			JOptionPane.showMessageDialog(ventanaMenuUsuario, "Usuario no encontrado.");
+		}
 	}
 
 	public void cerrarSesion() {
@@ -125,19 +130,44 @@ public class AplicacionUsuarios implements Serializable{
 		JOptionPane.showMessageDialog(crearUsuario, "El usuario ha sido creado con éxito.");
 	}
 
-	public void cambiarContraseña(String nombreUsuario, String nuevaContrasenha) {
+	public void cambiarContrasenha(String nombreUsuario, String nuevaContrasenha) {
 		int posicion = obtenerPosicionUsuario(nombreUsuario, user);
 		if(posicion != -1){
 			JSONObject usuario = (JSONObject) user.get(posicion);
 			usuario.put("contraseña", nuevaContrasenha);
-			System.out.println("La contraseña se ha actualizado correctamente.");
+			guardarUsuariosEnArchivo();
+			JOptionPane.showMessageDialog(ventanaMenuUsuario, "La contraseña se ha actualizado correctamente.");
 		}else {
-			System.out.println("El usuario introducido no existe.");
+			JOptionPane.showMessageDialog(ventanaMenuUsuario, "El usuario introducido no existe.");
 		}
-			}
+	}
+
+	private JSONArray cargarUsuariosDesdeArchivo(String ruta){
+		try(FileReader fr = new FileReader(RUTA_FICHERO1)){
+			return (JSONArray) parser.parse(fr);
+		} catch(IOException | ParseException e){
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	private void guardarUsuariosEnArchivo() {
+		try(FileWriter fw = new FileWriter(RUTA_FICHERO1)){
+			fw.write(user.toJSONString());
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
 
 	public void borrarUsuario(String nombreUsuario) {
-		user.remove(obtenerPosicionUsuario(nombreUsuario, user));
+		int posicion = obtenerPosicionUsuario(nombreUsuario, user);
+		if(posicion != -1){
+			JSONObject usuario = (JSONObject) user.get(posicion);
+			user.remove(posicion);
+			JOptionPane.showMessageDialog(ventanaMenuUsuario, "Usuario eliminado con éxito.");
+		} else {
+			JOptionPane.showMessageDialog(ventanaMenuUsuario, "Usuario no encontrado.");
+		}
 	}
 
 	public void mostrarVentanaCrearUsuario() {
